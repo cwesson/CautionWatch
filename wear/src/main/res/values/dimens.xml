@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="analog_hrhand_stroke">3dp</dimen>
+    <dimen name="analog_minhand_stroke">3dp</dimen>
+    <dimen name="analog_sechand_stroke">2dp</dimen>
+    <dimen name="event_stroke">1dp</dimen>
+</resources>
