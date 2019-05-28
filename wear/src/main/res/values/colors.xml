@@ -2,6 +2,7 @@
 <resources>
     <color name="analog_background">#000000</color>
     <color name="analog_hands">#cccccc</color>
+    <color name="tick_stroke">#cccccc</color>
     <color name="event_stroke">#cccccc</color>
     <color name="event_fill_ambient">#000000</color>
     <color name="event_fill_bright">#000000</color>

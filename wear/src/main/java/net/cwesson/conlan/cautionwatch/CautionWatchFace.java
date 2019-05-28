@@ -119,6 +119,9 @@ public class CautionWatchFace extends CanvasWatchFaceService{
 		Paint mHandHrPaint;
 		Paint mHandMinPaint;
 		Paint mHandSecPaint;
+		Paint mTick1Paint;
+		Paint mTick5Paint;
+		Paint mTick15Paint;
 		Paint mDatePaint;
 		Paint mEventStrokePaint;
 		Paint mEventFillAmbientPaint;
@@ -183,6 +186,24 @@ public class CautionWatchFace extends CanvasWatchFaceService{
 			mEventStrokePaint.setStyle(Paint.Style.STROKE);
 			mEventStrokePaint.setAntiAlias(true);
 			mEventStrokePaint.setStrokeCap(Paint.Cap.ROUND);
+
+			mTick1Paint = new Paint();
+			mTick1Paint.setColor(resources.getColor(R.color.tick_stroke));
+			mTick1Paint.setStrokeWidth(resources.getDimension(R.dimen.tick1_stroke));
+			mTick1Paint.setAntiAlias(true);
+			mTick1Paint.setStrokeCap(Paint.Cap.ROUND);
+
+			mTick5Paint = new Paint();
+			mTick5Paint.setColor(resources.getColor(R.color.tick_stroke));
+			mTick5Paint.setStrokeWidth(resources.getDimension(R.dimen.tick5_stroke));
+			mTick5Paint.setAntiAlias(true);
+			mTick5Paint.setStrokeCap(Paint.Cap.ROUND);
+
+			mTick15Paint = new Paint();
+			mTick15Paint.setColor(resources.getColor(R.color.tick_stroke));
+			mTick15Paint.setStrokeWidth(resources.getDimension(R.dimen.tick15_stroke));
+			mTick15Paint.setAntiAlias(true);
+			mTick15Paint.setStrokeCap(Paint.Cap.ROUND);
 
 			mEventFillAmbientPaint = new Paint();
 			mEventFillAmbientPaint.setColor(resources.getColor(R.color.event_fill_ambient));
@@ -254,14 +275,45 @@ public class CautionWatchFace extends CanvasWatchFaceService{
 			// portion.
 			float centerX = bounds.width() / 2f;
 			float centerY = bounds.height() / 2f;
+			float radius = Math.max(centerX, centerY);
 
 			float secRot = mTime.second / 30f * (float) Math.PI;
 			float minRot = mTime.minute / 30f * (float) Math.PI;
 			float hrRot = ((mTime.hour + (mTime.minute / 60f)) / 6f) * (float) Math.PI;
 
-			float secLength = centerX;
-			float minLength = centerX - 40;
-			float hrLength = centerX - 80;
+			float secLength = radius;
+			float minLength = radius - 40;
+			float hrLength = radius - 80;
+			float tick15Length = radius - 8;
+			float tick5Length = radius - 4;
+			float tick1Length = radius - 2;
+
+
+			if(!mAmbient){
+				for(double t = 0.0; t <= Math.PI; t += Math.PI / 30f){
+					float x = (float) Math.sin(t) * radius;
+					float y = (float) -Math.cos(t) * radius;
+					canvas.drawLine(centerX - x, centerY - y, centerX + x, centerY + y, mTick1Paint);
+				}
+				canvas.drawCircle(centerX, centerY, tick1Length, mBackgroundPaint);
+
+				for(double t = 0.0; t <= Math.PI; t += Math.PI/6f){
+					float x = (float) Math.sin(t) * radius;
+					float y = (float) -Math.cos(t) * radius;
+					canvas.drawLine(centerX - x, centerY - y, centerX + x, centerY + y, mTick5Paint);
+				}
+				canvas.drawCircle(centerX, centerY, tick5Length, mBackgroundPaint);
+
+				for(double t = 0.0; t <= Math.PI; t += Math.PI/2f){
+					float x = (float) Math.sin(t) * radius;
+					float y = (float) -Math.cos(t) * radius;
+					canvas.drawLine(centerX - x, centerY - y, centerX + x, centerY + y, mTick15Paint);
+				}
+				canvas.drawCircle(centerX, centerY, tick15Length, mBackgroundPaint);
+			}
+
+			canvas.drawLine(centerX, 8, centerX-4, 0, mTick15Paint);
+			canvas.drawLine(centerX, 8, centerX+4, 0, mTick15Paint);
 
 			// Draw events
 			if(mMeetings != null){
