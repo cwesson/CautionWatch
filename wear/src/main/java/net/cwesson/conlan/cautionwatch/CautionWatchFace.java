@@ -122,6 +122,7 @@ public class CautionWatchFace extends CanvasWatchFaceService{
 		Paint mTick1Paint;
 		Paint mTick5Paint;
 		Paint mTick15Paint;
+		Paint mTick12Paint;
 		Paint mDatePaint;
 		Paint mEventStrokePaint;
 		Paint mEventFillAmbientPaint;
@@ -204,6 +205,12 @@ public class CautionWatchFace extends CanvasWatchFaceService{
 			mTick15Paint.setStrokeWidth(resources.getDimension(R.dimen.tick15_stroke));
 			mTick15Paint.setAntiAlias(true);
 			mTick15Paint.setStrokeCap(Paint.Cap.ROUND);
+
+			mTick12Paint = new Paint();
+			mTick12Paint.setColor(resources.getColor(R.color.tick_stroke));
+			mTick12Paint.setStrokeWidth(resources.getDimension(R.dimen.tick12_stroke));
+			mTick12Paint.setAntiAlias(true);
+			mTick12Paint.setStrokeCap(Paint.Cap.ROUND);
 
 			mEventFillAmbientPaint = new Paint();
 			mEventFillAmbientPaint.setColor(resources.getColor(R.color.event_fill_ambient));
@@ -288,7 +295,7 @@ public class CautionWatchFace extends CanvasWatchFaceService{
 			float tick5Length = radius - 4;
 			float tick1Length = radius - 2;
 
-
+			// Draw ticks
 			if(!mAmbient){
 				for(double t = 0.0; t <= Math.PI; t += Math.PI / 30f){
 					float x = (float) Math.sin(t) * radius;
@@ -312,8 +319,15 @@ public class CautionWatchFace extends CanvasWatchFaceService{
 				canvas.drawCircle(centerX, centerY, tick15Length, mBackgroundPaint);
 			}
 
-			canvas.drawLine(centerX, 8, centerX-4, 0, mTick15Paint);
-			canvas.drawLine(centerX, 8, centerX+4, 0, mTick15Paint);
+			// Draw 12 tick
+			Path path = new Path();
+			path.setFillType(Path.FillType.EVEN_ODD);
+			path.moveTo(centerX, 8);
+			path.lineTo(centerX - 4, 0);
+			path.arcTo(0f, 0f, centerX*2f, centerY*2f, 267f, 4f, false);
+			path.close();
+			canvas.drawPath(path, mBackgroundPaint);
+			canvas.drawPath(path, mTick12Paint);
 
 			// Draw events
 			if(mMeetings != null){

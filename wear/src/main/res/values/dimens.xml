@@ -7,4 +7,5 @@
     <dimen name="tick1_stroke">1dp</dimen>
     <dimen name="tick5_stroke">2dp</dimen>
     <dimen name="tick15_stroke">3dp</dimen>
+    <dimen name="tick12_stroke">1dp</dimen>
 </resources>
